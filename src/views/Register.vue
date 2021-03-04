@@ -8,24 +8,29 @@
             class="pa-5 mt-10 mx-auto"
         >
           <div class="overline mb-4 text-center" style="border-bottom: 2px solid dodgerblue">
-            Login Form
+            Register Form
           </div>
           <v-form @submit.prevent="submit">
             <v-container>
               <v-row>
                 <v-col
-                    v-if="errorMessages"
                     cols="12"
-                    class="text-center"
                 >
-                  <p class="red--text">{{ errorMessages }}</p>
+                  <v-text-field
+                      v-model="name"
+                      :rules="nameRules"
+                      label="Enter your name"
+                      required
+                  ></v-text-field>
                 </v-col>
+
                 <v-col
                     cols="12"
                 >
                   <v-text-field
                       v-model="email"
                       :rules="emailRules"
+                      :error-messages="response.email"
                       label="Enter your email"
                       required
                   ></v-text-field>
@@ -50,10 +55,10 @@
                       color="primary"
                       rounded
                       block
-                      :disabled="!isValidForm && busy"
+                      :disabled="!isValidForm || busy"
                       :loading="busy"
                   >
-                    Login
+                    Register
                   </v-btn>
                 </v-col>
               </v-row>
@@ -73,11 +78,15 @@ export default {
   data() {
     return {
       busy: false,
+      name: '',
       email: '',
       password: '',
-      errorMessages: '',
+      response: {},
       passwordVisible: false,
       emailRegex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
       emailRules: [
         v => !!v || 'E-mail is required',
         v => this.emailRegex.test(v) || 'E-mail must be valid',
@@ -95,14 +104,16 @@ export default {
     }),
     form() {
       let formData = new FormData()
+      formData.append('name', this.name)
       formData.append('email', this.email)
       formData.append('password', this.password)
       return formData
     },
     isValidForm() {
+      const isValidName = !!this.name
       const isValidEmail = this.emailRegex.test(this.email)
       const isValidPassword = this.password.length >= 6
-      return isValidEmail && isValidPassword
+      return isValidEmail && isValidPassword && isValidName
     }
   },
   methods: {
@@ -111,38 +122,38 @@ export default {
     }),
     submit() {
       this.busy = true
-      const url = 'login'
+      const url = 'register'
       axios.post(url, this.form).then((response) => {
         this.busy = false
         this.attempt(response.data.token).then(() => {
           this.$router.push('/')
         })
-      }).catch(() => {
+      }).catch((error) => {
+        this.response = error.response.data
         this.busy = false
-        this.errorMessages = 'Something went wrong!'
       })
     },
     finalize() {
       if (this.authenticated) {
-        this.errors = '';
-        this.busy = false;
-        this.$router.push('/');
+        this.errors = ''
+        this.busy = false
+        this.$router.push('/')
       } else {
         this.errors = 'Credential did not match. Please try again or register as a new user.'
-        this.busy = false;
+        this.busy = false
       }
     },
     clear() {
-      this.phone = '';
-      this.password = '';
-      this.errors = '';
-      this.busy = false;
+      this.name = ''
+      this.password = ''
+      this.errors = ''
+      this.busy = false
       this.$refs.observer.reset();
     },
   },
   watch: {
     form() {
-      this.errorMessages = ''
+      this.response = {}
     }
   }
 }

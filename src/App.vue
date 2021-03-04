@@ -5,13 +5,44 @@
         color="white"
     >
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-      <v-toolbar-title>
+      <v-toolbar-title class="cursor-pointer" @click="$router.push({name:'Home'})">
         Product CRUD
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon color="green">mdi-login</v-icon>
+      <v-btn
+          v-if="!authenticated"
+          :to="({name:'Login'})"
+          tile
+          small
+          text
+          color="primary"
+      >
+        Login
       </v-btn>
+      <v-btn
+          v-if="!authenticated"
+          :to="({name:'Register'})"
+          tile
+          small
+          color="primary"
+          text
+          rounded
+      >
+        Register
+      </v-btn>
+      <v-tooltip key="logout" bottom v-else>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+              icon
+              v-bind="attrs"
+              v-on="on"
+              @click="logout"
+          >
+            <v-icon small color="red">mdi-logout</v-icon>
+          </v-btn>
+        </template>
+        <span>Log out</span>
+      </v-tooltip>
     </v-app-bar>
     <v-navigation-drawer
         v-model="drawer"
@@ -58,24 +89,33 @@
       </v-list>
     </v-navigation-drawer>
     <v-main>
-      <HelloWorld/>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: 'App',
 
-  components: {
-    HelloWorld,
-  },
+  components: {},
 
   data: () => ({
     drawer: false,
     group: null,
   }),
+  computed: {
+    ...mapGetters({
+      authenticated: 'auth/authenticated'
+    })
+  },
+  methods: {
+    ...mapActions({
+      logout: 'auth/logout'
+    })
+  }
 };
 </script>
