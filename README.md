@@ -1,8 +1,14 @@
 # frontend-crud-assignment
 
-## Project setup
+## Please follow the steps below to run the project.
+### Clone the project and install dependencies
 ```
+git clone https://github.com/yahrdy/frontend-crud-assignment.git
 npm install
+```
+### Configure project environment in `.env` file
+```
+VUE_APP_BACKEND=http://localhost:8000 //update the VUE_APP_BACKEND value by your backend endpoint.
 ```
 
 ### Compiles and hot-reloads for development
@@ -19,6 +25,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

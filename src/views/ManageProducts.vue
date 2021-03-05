@@ -108,6 +108,8 @@
                             color="blue darken-1"
                             text
                             type="submit"
+                            :loading="busy"
+                            :disabled="busy"
                         >
                           Save
                         </v-btn>
@@ -195,6 +197,7 @@ import moment from 'moment'
 export default {
   data: () => ({
     snackbar: false,
+    busy: false,
     color: '',
     snackbarText: '',
     search: '',
@@ -352,6 +355,7 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
+        this.busy = true
         const url = 'products/' + this.editedItem.id
         let editedIndex = this.editedIndex
         axios.post(url, this.form).then((response) => {
@@ -360,11 +364,13 @@ export default {
           this.color = 'green'
           this.snackbarText = 'Product updated'
           this.snackbar = true
+          this.busy = false
         }).catch((error) => {
           this.errorMessages = error.response.data
         })
         Object.assign(this.products[this.editedIndex], this.editedItem)
       } else {
+        this.busy = true
         const url = 'products/'
         axios.post(url, this.form).then((response) => {
           this.products.push(response.data)
@@ -372,8 +378,10 @@ export default {
           this.color = 'green'
           this.snackbarText = 'New product created'
           this.snackbar = true
+          this.busy = false
         }).catch((error) => {
           this.errorMessages = error.response.data
+          this.busy = false
         })
       }
     },

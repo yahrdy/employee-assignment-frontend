@@ -6,7 +6,7 @@
     >
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <v-toolbar-title class="cursor-pointer" @click="$router.push({name:'Home'})">
-        Product CRUD
+        {{ appName }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
@@ -58,30 +58,12 @@
             active-class="deep-purple--text text--accent-4"
         >
 
-          <v-list-item>
+          <v-list-item :to="{name:'About'}">
             <v-list-item-icon>
-              <v-icon>mdi-checkbox-marked-circle</v-icon>
+              <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
-              Menu item 1
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-checkbox-marked-circle</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>
-              Menu item 2
-            </v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-icon>
-              <v-icon>mdi-checkbox-marked-circle</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>
-              Menu item 3
+              About
             </v-list-item-title>
           </v-list-item>
 
@@ -106,6 +88,7 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
+    appName: process.env.VUE_APP_NAME
   }),
   computed: {
     ...mapGetters({
