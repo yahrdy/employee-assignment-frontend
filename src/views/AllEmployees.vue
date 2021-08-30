@@ -36,19 +36,6 @@
               v-model="dialog"
               max-width="800px"
           >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  v-bind="attrs"
-                  v-on="on"
-                  text
-              >
-                <v-icon>mdi-plus</v-icon>
-                Add new employee
-              </v-btn>
-            </template>
             <v-card>
               <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
