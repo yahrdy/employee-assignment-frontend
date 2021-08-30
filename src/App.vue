@@ -4,7 +4,7 @@
         app
         color="white"
     >
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="cursor-pointer" @click="$router.push({name:'Home'})">
         {{ appName }}
       </v-toolbar-title>
