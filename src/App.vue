@@ -68,7 +68,7 @@
           </v-list-item>
           <v-list-item :to="{name:'AllDepartments'}">
             <v-list-item-icon>
-              <v-icon>mdi-information-outline</v-icon>
+              <v-icon>mdi-theater</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
               Departments
@@ -76,7 +76,7 @@
           </v-list-item>
           <v-list-item :to="{name:'AllEmployees'}">
             <v-list-item-icon>
-              <v-icon>mdi-information-outline</v-icon>
+              <v-icon>mdi-account-multiple</v-icon>
             </v-list-item-icon>
             <v-list-item-title>
               Employees
