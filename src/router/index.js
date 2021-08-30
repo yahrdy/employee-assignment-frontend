@@ -3,8 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from "@/views/Login";
 import Register from "@/views/Register";
-import ManageProducts from "@/views/ManageProducts";
-import Product from "@/views/Product";
 import About from "@/views/About";
 
 Vue.use(VueRouter)
@@ -45,18 +43,6 @@ const routes = [
         name: 'Register',
         component: Register,
         beforeEnter: checkGuest
-    },
-    {
-        path: '/products',
-        name: 'ManageProducts',
-        component: ManageProducts,
-        beforeEnter: checkAuth
-    },
-    {
-        path: '/products/:productId',
-        name: 'Product',
-        component: Product,
-        beforeEnter: checkAuth
     },
     {
         path: '/companies',
