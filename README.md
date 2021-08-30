@@ -3,7 +3,7 @@
 ## Please follow the steps below to run the project.
 ### Clone the project and install dependencies
 ```
-git clone https://github.com/yahrdy/frontend-crud-assignment.git
+git clone git@github.com:yahrdy/employee-assignment-frontend.git
 npm install
 ```
 ### Configure project environment in `.env` file
