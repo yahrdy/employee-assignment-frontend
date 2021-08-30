@@ -114,7 +114,7 @@ export default {
       const url = 'login'
       axios.post(url, this.form).then((response) => {
         this.busy = false
-        this.attempt(response.data.token).then(() => {
+        this.attempt(response.data.accessToken).then(() => {
           this.$router.push('/')
         })
       }).catch(() => {

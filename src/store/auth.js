@@ -45,7 +45,7 @@ export default ({
             try {
                 let url = 'user';
                 axios.get(url).then((response) => {
-                    if (response.data === 'Unauthenticated.') {
+                    if (response.status !== 200) {
                         commit("SET_TOKEN", null);
                         commit("SET_USER", null);
                     } else {

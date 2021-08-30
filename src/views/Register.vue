@@ -4,7 +4,7 @@
       <v-row class="justify-center">
         <v-card
             tile
-            max-width="500"
+            max-width="1000"
             class="pa-5 mt-10 mx-auto"
         >
           <div class="overline mb-4 text-center" style="border-bottom: 2px solid dodgerblue">
@@ -15,11 +15,34 @@
               <v-row>
                 <v-col
                     cols="12"
+                    md="4"
                 >
                   <v-text-field
-                      v-model="name"
+                      v-model="employee.first_name"
                       :rules="nameRules"
-                      label="Enter your name"
+                      label="Enter your first name*"
+                      required
+                  ></v-text-field>
+                </v-col>
+
+                <v-col
+                    cols="12"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="employee.middle_name"
+                      label="Enter your middle name"
+                  ></v-text-field>
+                </v-col>
+
+                <v-col
+                    cols="12"
+                    md="4"
+                >
+                  <v-text-field
+                      v-model="employee.last_name"
+                      :rules="nameRules"
+                      label="Enter your last name*"
                       required
                   ></v-text-field>
                 </v-col>
@@ -28,26 +51,44 @@
                     cols="12"
                 >
                   <v-text-field
-                      v-model="email"
+                      v-model="employee.email"
                       :rules="emailRules"
                       :error-messages="response.email"
-                      label="Enter your email"
+                      label="Enter your email*"
                       required
                   ></v-text-field>
                 </v-col>
-
                 <v-col
                     cols="12"
                 >
                   <v-text-field
-                      v-model="password"
+                      v-model="employee.password"
                       :rules="passwordRules"
-                      label="Enter your password"
+                      label="Enter your password*"
                       required
                       :type="passwordVisible ? 'text' : 'password'"
                       :append-icon="passwordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                       @click:append="passwordVisible = !passwordVisible"
                   ></v-text-field>
+                </v-col>
+                <v-col
+                    cols="12"
+                    md="6">
+                  <v-select
+                      :error-messages="ageErrorMessage"
+                      :rules="requiredRules"
+                      v-model="employee.age"
+                      :items="ages" label="Age*"
+                  />
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-combobox
+                      v-model="employee.interests"
+                      :items="interests"
+                      label="Interests"
+                      multiple
+                      clearable
+                  ></v-combobox>
                 </v-col>
                 <v-col cols="12">
                   <v-btn
@@ -78,14 +119,37 @@ export default {
   data() {
     return {
       busy: false,
-      name: '',
-      email: '',
-      password: '',
+      employee: {
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        age: '',
+        email: '',
+        password: '',
+        interests: [],
+      },
+      defaultEmployee: {
+        first_name: '',
+        middle_name: '',
+        last_name: '',
+        age: '',
+        email: '',
+        password: '',
+        interests: [],
+      },
+      interests: [
+        'Programming',
+        'Drawing',
+        'Designing',
+        'Problem Solving',
+        'Dancing',
+        'Travelling'
+      ],
       response: {},
       passwordVisible: false,
       emailRegex: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       nameRules: [
-        v => !!v || 'Name is required',
+        v => !!v || 'This is required',
       ],
       emailRules: [
         v => !!v || 'E-mail is required',
@@ -95,6 +159,9 @@ export default {
         v => !!v || 'Password is required',
         v => v.length >= 6 || 'Password must be at least 6 characters',
       ],
+      requiredRules: [
+        v => !!v || 'Age is required'
+      ]
     }
   },
   computed: {
@@ -104,16 +171,48 @@ export default {
     }),
     form() {
       let formData = new FormData()
-      formData.append('name', this.name)
-      formData.append('email', this.email)
-      formData.append('password', this.password)
+      formData.append('first_name', this.employee.first_name)
+      formData.append('middle_name', this.employee.middle_name)
+      formData.append('last_name', this.last_name)
+      formData.append('email', this.employee.email)
+      formData.append('password', this.employee.password)
+      formData.append('age', this.employee.age)
+      formData.append('interests', this.employee.interests)
       return formData
     },
     isValidForm() {
-      const isValidName = !!this.name
-      const isValidEmail = this.emailRegex.test(this.email)
-      const isValidPassword = this.password.length >= 6
-      return isValidEmail && isValidPassword && isValidName
+      const isValidInfo = !!this.employee.first_name && !!this.employee.last_name && this.employee.age > 0
+      const isValidEmail = this.emailRegex.test(this.employee.email)
+      const isValidPassword = this.employee.password.length >= 6
+      return isValidEmail && isValidPassword && isValidInfo
+    },
+    ages() {
+      let ages = []
+      for (let i = 18; i < 61; i++) {
+        ages.push(i)
+      }
+      return ages
+    },
+    firstNameErrorMessage() {
+      return this.response.first_name ? this.response.first_name[0] : null
+    },
+    lastNameErrorMessage() {
+      return this.response.last_name ? this.response.last_name[0] : null
+    },
+    middleNameErrorMessage() {
+      return this.response.middle_name ? this.response.middle_name[0] : null
+    },
+    emailErrorMessage() {
+      return this.response.email ? this.response.email[0] : null
+    },
+    passwordErrorMessage() {
+      return this.response.password ? this.response.password[0] : null
+    },
+    ageErrorMessage() {
+      return this.response.age ? this.response.age[0] : null
+    },
+    interestsErrorMessage() {
+      return this.response.interests ? this.response.interests[0] : null
     }
   },
   methods: {
@@ -125,7 +224,7 @@ export default {
       const url = 'register'
       axios.post(url, this.form).then((response) => {
         this.busy = false
-        this.attempt(response.data.token).then(() => {
+        this.attempt(response.data.accessToken).then(() => {
           this.$router.push('/')
         })
       }).catch((error) => {
@@ -144,16 +243,18 @@ export default {
       }
     },
     clear() {
-      this.name = ''
-      this.password = ''
+      this.employee = this.defaultEmployee
       this.errors = ''
       this.busy = false
       this.$refs.observer.reset();
     },
   },
   watch: {
-    form() {
-      this.response = {}
+    employee: {
+      handler() {
+        this.response = {}
+      },
+      deep: true
     }
   }
 }

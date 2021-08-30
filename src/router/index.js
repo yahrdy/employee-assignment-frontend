@@ -59,6 +59,36 @@ const routes = [
         beforeEnter: checkAuth
     },
     {
+        path: '/companies',
+        name: 'ManageCompanies',
+        component: () => import('@/views/ManageCompanies'),
+        beforeEnter: checkAuth
+    },
+    {
+        path: '/departments/:companyId',
+        name: 'ManageDepartments',
+        component: () => import('@/views/ManageDepartments'),
+        beforeEnter: checkAuth
+    },
+    {
+        path: '/employees/:departmentId',
+        name: 'ManageEmployees',
+        component: () => import('@/views/ManageEmployees'),
+        beforeEnter: checkAuth
+    },
+    {
+        path: '/departments',
+        name: 'AllDepartments',
+        component: () => import('@/views/AllDepartments'),
+        beforeEnter: checkAuth
+    },
+    {
+        path: '/employees',
+        name: 'AllEmployees',
+        component: () => import('@/views/AllEmployees'),
+        beforeEnter: checkAuth
+    },
+    {
         path: '/about',
         name: 'About',
         component: About,

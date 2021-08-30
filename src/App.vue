@@ -33,7 +33,8 @@
       <v-tooltip key="logout" bottom v-else>
         <template v-slot:activator="{ on, attrs }">
           <v-btn
-              icon
+              text
+              plain
               v-bind="attrs"
               v-on="on"
               @click="logout"
@@ -46,8 +47,7 @@
     </v-app-bar>
     <v-navigation-drawer
         v-model="drawer"
-        absolute
-        temporary
+        app
     >
       <v-list
           nav
@@ -58,6 +58,30 @@
             active-class="deep-purple--text text--accent-4"
         >
 
+          <v-list-item :to="{name:'ManageCompanies'}">
+            <v-list-item-icon>
+              <v-icon>mdi-home-modern</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Companies
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{name:'AllDepartments'}">
+            <v-list-item-icon>
+              <v-icon>mdi-information-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Departments
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item :to="{name:'AllEmployees'}">
+            <v-list-item-icon>
+              <v-icon>mdi-information-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>
+              Employees
+            </v-list-item-title>
+          </v-list-item>
           <v-list-item :to="{name:'About'}">
             <v-list-item-icon>
               <v-icon>mdi-information-outline</v-icon>
@@ -86,7 +110,7 @@ export default {
   components: {},
 
   data: () => ({
-    drawer: false,
+    drawer: true,
     group: null,
     appName: process.env.VUE_APP_NAME
   }),
