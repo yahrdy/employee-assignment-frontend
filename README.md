@@ -1,5 +1,3 @@
-# frontend-crud-assignment
-
 ## Please follow the steps below to run the project.
 ### Clone the project and install dependencies
 ```
